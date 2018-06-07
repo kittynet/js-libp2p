@@ -71,6 +71,13 @@ class Node extends EventEmitter {
       })
     }
 
+    // Attach private network protector
+    if (_options.protector) {
+      this.switch.protector = _options.protector
+    } else if (process.env.LIBP2P_FORCE_PNET) {
+      throw new Error('Private network is enforced, but not protector was provided')
+    }
+
     // Attach discovery mechanisms
     if (this.modules.discovery) {
       let discoveries = this.modules.discovery
